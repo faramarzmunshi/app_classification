@@ -1,0 +1,26 @@
+Two options:
+Create a new model
+Run a single app or an entire cluster through the existing trained model and get a label
+
+Option 1 | Create a New Model:
+Pull data for cluster using ~/data_processing/pull_data_from_dashboard.py
+Use ~/data_processing/json_to_datascience_format.py to translate the data pulled from the dashboard into the datascience format (Remember to either specify the file names, or put them all in the same directory with the same file extension)
+Use ~/data_processing/datascience_to_cnn_output.py (remember to change the REALM list to the realms you want included in the new model i.e. only well-named clusters)
+Use ~/final/train/create_models.py to merge the realms and produce a model. The model will be saved as ~/final/FINAL with all other intermediate models in the same directory.
+
+~/output% python ~/data_processing/pull_data_from_dashboard.py
+~/output% python ~/data_processing/json_to_datascience_format.py
+~/output% python ~/data_processing/datascience_to_cnn_output.py
+~/output% python ~/final/train/create_models.py
+
+
+Option 2 | Use an existing model to get labels:
+Pull data for cluster using ~/data_processing/pull_data_from_dashboard.py
+Use ~/data_processing/json_test_feed_model.py to feed the data into the model and print out a dictionary with label as key and a tuple of (application ID, application name)
+
+Comments:
+Both of these can be done at the same time.
+ 
+Ideally, pull_data_from_dashboard.py will be linked to s3 to get the raw data rather than putting the strain on dashboard.
+
+json_to_datascience_format.py and datascience_to_cnn_output.py can be merged into a single piece of code if the raw data is not needed in data science format. For production, they should ideally be merged.
